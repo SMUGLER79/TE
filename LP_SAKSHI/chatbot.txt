@@ -1,0 +1,41 @@
+import gradio as gr
+from nltk.chat.util import Chat, reflections
+
+# Enhanced patterns for a more holistic experience
+pairs = [
+    [r"hi|hello|hey", ["Hello there!  I'm your train booking assistant. How can I help you today?"]],
+    [r"(.*)book.*ticket(.*)", ["Absolutely! Can you tell me your source and destination cities?"]],
+    [r"from (.*) to (.*)", ["Nice! Traveling from %1 to %2. What date would you like to travel?"]],
+    [r"(.*)(on|at|for) (.*)", ["Got it. You want to travel on %3. How many tickets do you need?"]],
+    [r"(.*) (tickets?|seats?)", ["Perfect! Booking %1 tickets. Do you have any preferences (window seat, class etc.)?"]],
+    [r"(.*)window(.*)", ["Noted! I’ll try to book a window seat if available. Shall I proceed?"]],
+    [r"(yes|confirm|proceed)", ["Booking confirmed ! You’ll get your ticket details shortly."]],
+    [r"cancel.*ticket", ["I can help with that. Please provide your PNR number."]],
+    [r"pnr number is (.*)", ["Thank you. Your cancellation request for PNR %1 has been received. Refund will be processed soon."]],
+    [r"status.*(booking|ticket)", ["Sure! Could you share your PNR number to check the status?"]],
+    [r"payment options|how.*pay", ["You can pay via UPI, Net Banking, Credit/Debit Cards, or IRCTC Wallet."]],
+    [r"(.*)fare.*from (.*) to (.*)", ["Fare depends on train type and class. Visit IRCTC or ask me for estimates."]],
+    [r"available.*train.*from (.*) to (.*)", ["Yes, multiple trains are available daily. Do you want a list?"]],
+    [r"list.*trains", ["Trains: Shatabdi Express, Rajdhani Express, Duronto Express. Check IRCTC for details."]],
+    [r"documents.*travel", ["You’ll need a valid government ID like Aadhar, PAN, or Driving License."]],
+    [r"can.*book.*others", ["Yes, just provide their details during booking."]],
+    [r"(.*)(thank you|thanks)", ["You're very welcome . Anything else I can help with?"]],
+    [r"(bye|quit|exit)", ["Goodbye! Have a safe and pleasant journey "]],
+    [r"(.*)", ["I'm not sure I understood that. Can you please rephrase or ask a train-related question?"]],
+]
+
+chatbot = Chat(pairs, reflections)
+
+# Response function
+def respond(message, history):
+    return chatbot.respond(message)
+
+# Gradio chat interface
+demo = gr.ChatInterface(
+    fn=respond,
+    title=" Train Booking Assistant",
+    description="Ask me to book, cancel, or check train tickets. I'm here to assist you!",
+    theme="soft",
+)
+
+demo.launch()

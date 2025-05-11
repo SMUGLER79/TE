@@ -1,0 +1,2 @@
+Path found: A -> B -> E -> F
+Total cost: 4
